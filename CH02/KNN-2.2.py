@@ -62,7 +62,7 @@ def autoNorm(dataset):
     newval=(dataset-minval)/(maxval-minval)
     return newval
 
-def datingClassTest(filename,test_ratio=0.1):
+def datingClassTest(filename,test_ratio=0.1,k=3):
     datingDataMat,datingLabels=file2matrix(filename)
     normMat=autoNorm(datingDataMat)
     m=normMat.shape[0]
@@ -70,7 +70,7 @@ def datingClassTest(filename,test_ratio=0.1):
     count=0.0
     for i in range(test_num):
         classify_ans=classify0(normMat[i,:],normMat[test_num:m,:],
-                               datingLabels[test_num:m],3)
+                               datingLabels[test_num:m],k)
         print('the classifier came back with {:2d},real:{:2d}'.format(classify_ans,datingLabels[i]))
         if classify_ans!=datingLabels[i]:
             count+=1.0
