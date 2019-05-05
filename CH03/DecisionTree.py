@@ -1,5 +1,5 @@
 import numpy as np
-
+import operator
 
 def systemShannonEnt(dataset):
     numEntries = len(dataset)
@@ -17,9 +17,9 @@ def systemShannonEnt(dataset):
 
 
 def createDataSet():
-    dataSet = [[1, 1, 'yes'], [1, 1, 'yes'], [1, 0, 'no'], [0, 0, 'no'], [0, 0, 'no']]
+    dataSet = [[1, 1, 'yes'], [1, 1, 'yes'], [1, 0, 'no'], [0, 1, 'no'], [0, 1, 'no']]
     labels = ['no surfacing', 'flippers']
-    return dataSet
+    return dataSet,labels
 
 def splitDataSet(dataset,axis,value):
     retDataSet=[]
@@ -48,4 +48,27 @@ def chooseBestFeatureToSplit(dataSet):
             bestFeature=i
     return bestFeature
 
+def majorityCnt(classList):
+    classCount={}
+    for vote in classList:
+        if vote not in classCount.keys() :
+            classCount[vote]=0
+        classCount[vote]+=1
+    sortedClassCount=sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
+    return sortedClassCount[0][0]
 
+def createTree(dataSet,labels):
+    classList=[ex[-1] for ex in dataSet]
+    if classList.count(classList[0])==len(classList):
+        return classList[0]
+    if len(dataSet[0])==1:
+        return majorityCnt(classList)
+    bestFeat=chooseBestFeatureToSplit(dataSet)
+    bestFeatLabel=labels[bestFeat]  #mappnig
+    myTree={bestFeatLabel:{}}
+    del (labels[bestFeat])
+    featValues=[ex[bestFeat] for ex in dataSet]
+    uniquevals=set(featValues)
+    for value in uniquevals:
+        myTree[bestFeatLabel][value]=createTree(splitDataSet(dataSet,bestFeat,value),labels)
+    return myTree
