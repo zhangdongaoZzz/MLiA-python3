@@ -1,5 +1,6 @@
 import  numpy as np
-
+import re
+import  random
 
 
 def loadDataSet():
@@ -70,3 +71,35 @@ def bagOfwords2VecMN(vocabList,inputSet):
             returnVec[vocabList.index(word)]+=1
     return  returnVec
 
+def textParse(textstring):
+    listOfTokens=re.split(r'\W',textstring)
+    return [word.lower() for word in listOfTokens if len(word)>2]
+
+path=r'C:\Users\zhang\Desktop\ml\machinelearninginaction\Ch04'
+
+def spamTest():
+    docList=[];classList=[]
+    for i in range(1,26):
+        wordList=textParse(open(r'C:\Users\zhang\Desktop\ml\machinelearninginaction\Ch04\email\spam\{}.txt'.format(i),encoding='gb18030',errors='ignore').read())
+        docList.append(wordList)
+        classList.append(1)
+        wordList=textParse(open(r'C:\Users\zhang\Desktop\ml\machinelearninginaction\Ch04\email\ham\{}.txt'.format(i),encoding='gb18030',errors='ignore').read())
+        docList.append(wordList)
+        classList.append(0)
+    vocabList=createVocabList(docList)
+    #创建测试集
+    testSet=[];testIndex=[random.randint(0,49) for i in range(10)]
+    for i in testIndex:
+        testSet.append(docList[i])
+    trainMat=[];trainClasses=[]
+    for docIndex in range(50):
+        trainMat.append(setOfwords2Vec(vocabList,docList[docIndex]))
+        trainClasses.append(classList[docIndex])
+    p0,p1,pA=trainNB0(np.array(trainMat),np.array(trainClasses))
+    #
+    errorCount=0
+    for doc in testIndex:
+        wordVector=setOfwords2Vec(vocabList,docList[doc])
+        if classifyNB(np.array(wordVector),p0,p1,pA)!=classList[doc]:
+            errorCount+=1
+    print('error:%f'%(float(errorCount)/len(testSet)))
