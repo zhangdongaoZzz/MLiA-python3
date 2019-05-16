@@ -34,7 +34,7 @@ def buildStump(dataArr,classLabels,D):
                 errArr=np.mat(np.ones((m,1)))
                 errArr[predictedVals==labelMat]=0
                 weightedError=D.T*errArr
-                print('split: dim %d, thresh %.2f, thresh ineqal: %s, the weighted error is %.3f'% (i, threshVal, inequal, weightedError))
+                # print('split: dim %d, thresh %.2f, thresh ineqal: %s, the weighted error is %.3f'% (i, threshVal, inequal, weightedError))
                 if weightedError<minError:
                     minError=weightedError
                     bestClasEst=predictedVals.copy()
@@ -42,3 +42,49 @@ def buildStump(dataArr,classLabels,D):
                     bestStump['thresh']=threshVal
                     bestStump['ineq']=inequal
     return bestStump,minError,bestClasEst
+
+def adaBoostTrainDS(dataArr,classLabels,numIt=40):
+    weakClass=[]
+    m=len(dataArr)
+    D=np.mat(np.ones((m,1))/m)
+    aggClassEst=np.mat(np.zeros((m,1)))
+    for i in range(numIt):
+        bestStump,error,classEst=buildStump(dataArr,classLabels,D)
+        # print(D.T)
+        alpha=float(0.5*np.log((1-error)/max(error,1e-16)))
+        bestStump['alpha']=alpha
+        weakClass.append(bestStump)
+        # print('classEst',classEst.T)
+        expon=np.multiply(-1*alpha*np.mat(classLabels).T,classEst)
+        D=np.multiply(D,np.exp(expon))
+        D=D/sum(D)
+        aggClassEst+=alpha*classEst
+        # print('aggClassEst',aggClassEst)
+        aggErrors=np.multiply(np.sign(aggClassEst)!=np.mat(classLabels).T,np.ones((m,1)))
+        aggErrors=np.multiply(np.sign(aggClassEst)!=np.mat(classLabels).T,np.ones((m,1)))
+        errorRate=sum(aggErrors)/m
+        print('total error:',errorRate)
+        if errorRate==0.0:
+            break
+    return  weakClass
+
+
+def adaClassify(datToClass,classifierArr):
+    dataMatrix=np.mat(datToClass)
+    m=len(dataMatrix)
+    aggClassEst=np.mat(np.zeros((m,1)))
+    for i in range(len(classifierArr)):
+        classEst=stumpClassify(dataMatrix,classifierArr[i]['dim'],classifierArr[i]['thresh'],classifierArr[i]['ineq'])
+        aggClassEst+=classifierArr[i]['alpha']*classEst
+        print(aggClassEst)
+    return np.sign(aggClassEst)
+
+def loadDataSet(filename=r'C:\Users\zhang\Desktop\ml\machinelearninginaction\Ch07\horseColicTraining2.txt'):
+    numFeat=len(open(filename).readline().split())
+    dataMat=[];labelMat=[]
+    with open(filename) as  fr:
+        for line in fr.readlines():
+            currLine=line.strip().split()
+            dataMat.append([float(currLine[i]) for i in range(numFeat-1)])
+            labelMat.append(float(currLine[-1]))
+    return dataMat,labelMat
