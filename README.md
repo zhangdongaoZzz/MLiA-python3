@@ -5,6 +5,6 @@
 - Format : PyCharm
 - Language : Pyhton 3
 
-## TODO
-- Revise code for more understandable
-- Fix some errors
+## TO DO
+- Upload data
+- add comment for important lines
