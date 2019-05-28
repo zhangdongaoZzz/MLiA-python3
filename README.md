@@ -8,3 +8,5 @@
 ## TO DO
 - Upload data
 - add comment for important lines
+
+![image](https://github.com/zhangdongaoZzz/MLiA-python3/blob/master/Info-graphs/s26696371.jpg)
