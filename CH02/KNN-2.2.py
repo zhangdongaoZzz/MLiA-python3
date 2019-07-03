@@ -23,7 +23,7 @@ def classify0(inX,dataSet,labels,k):
     return sortedclasscount[0][0]
 
 #2.2
-def file2matrix(filename):
+def file2matrix(filename):    #读取数据，分别存储数据行和对应label
     fr=open(filename)
     arrayOLines=fr.readlines()
     numberOfLines=len(arrayOLines)
@@ -32,13 +32,13 @@ def file2matrix(filename):
     index=0
     for line in arrayOLines:
         line=line.strip()
-        linesplit=line.split('\t')
-        returnMat[index,:]=linesplit[0:3]
-        classLabelVector.append(int(linesplit[-1]))
+        linesplit=line.split('\t')   #按\t分割，返回结果为列表[]
+        returnMat[index,:]=linesplit[0:3]    
+        classLabelVector.append(int(linesplit[-1]))  #每行数据最后一列为tag
         index+=1
     return  returnMat,np.array(classLabelVector)
 
-def plot_KNN(datingDataMat,datingLabels,n,m):
+def plot_KNN(datingDataMat,datingLabels,n,m):    #对数据可视化
     fig = plt.figure()
     ax = fig.add_subplot(111)
     mpl.rcParams['font.sans-serif'] = ['SimHei']
@@ -62,16 +62,16 @@ def autoNorm(dataset):
     newval=(dataset-minval)/(maxval-minval)
     return newval
 
-def datingClassTest(filename,test_ratio=0.1,k=3):
+def datingClassTest(filename,test_ratio=0.1,k=3):  #测试集比例为10%
     datingDataMat,datingLabels=file2matrix(filename)
     normMat=autoNorm(datingDataMat)
     m=normMat.shape[0]
     test_num=int(test_ratio*m)
     count=0.0
-    for i in range(test_num):
+    for i in range(test_num): 
         classify_ans=classify0(normMat[i,:],normMat[test_num:m,:],
                                datingLabels[test_num:m],k)
-        print('the classifier came back with {:2d},real:{:2d}'.format(classify_ans,datingLabels[i]))
-        if classify_ans!=datingLabels[i]:
+        print('the classifier came back with {:2d},real:{:2d}'.format(classify_ans,datingLabels[i]))  #对测试集分类
+        if classify_ans!=datingLabels[i]:    #对比分类正确性，记录错误次数
             count+=1.0
-    print('error:{:.3f}'.format(count/test_num))
+    print('error:{:.3f}'.format(count/test_num)) 
