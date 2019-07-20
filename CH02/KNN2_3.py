@@ -15,7 +15,7 @@ def img2vector(filename):
             vector[0,32*i+j]=int(line[j])
     return vector
 
-def handwritingClassTest(trainpath=r'C:\Users\zhang\Desktop\ml\machinelearninginaction\Ch02\trainingDigits',testpath=r'C:\Users\zhang\Desktop\ml\machinelearninginaction\Ch02\testDigits'):
+def handwritingClassTest(trainpath=r'yourpath',testpath=r'yourpath'): #将yourpath 改为自己存放数据的路径
     hwLabels=[]
     trainingFileList=os.listdir(trainpath)
     m=len(trainingFileList)
