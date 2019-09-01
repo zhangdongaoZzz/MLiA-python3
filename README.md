@@ -2,7 +2,7 @@
 
 ## Introduce
 - Content: MLiA [Petter Harrington, 2012]
-- Format : PyCharm
+- Format : PyCharm,jupyter notebook(recommend)
 - Language : Pyhton 3
 
 ## TO DO
