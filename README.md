@@ -7,7 +7,9 @@
 
 ##
 jupyter notebook 版本：
-![image](https://github.com/zhangdongaoZzz/MLiA-python3/blob/master/Info-graphs/jn.png)
+![image](https://github.com/zhangdongaoZzz/MLiA-python3/blob/master/Info-graphs/jn1.png)
+![image](https://github.com/zhangdongaoZzz/MLiA-python3/blob/master/Info-graphs/jn2.png)
+![image](https://github.com/zhangdongaoZzz/MLiA-python3/blob/master/Info-graphs/jn3.png)
 
 ## TO DO
 - Upload data
