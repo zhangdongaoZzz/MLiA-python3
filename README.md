@@ -5,6 +5,10 @@
 - Format : PyCharm,jupyter notebook(recommend)
 - Language : Pyhton 3
 
+##
+jupyter notebook 版本：
+![image](https://github.com/zhangdongaoZzz/MLiA-python3/blob/master/Info-graphs/jn.png)
+
 ## TO DO
 - Upload data
 - add comment for important lines
