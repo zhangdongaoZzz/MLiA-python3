@@ -1,2 +1,2 @@
-1.将整个jupyter notebook文件夹下载放在本机jupyter的默认路径即可运行。
-2.把所有数据放在jupyter notebook 下即可运行
+1.将整个jupyter notebook文件夹下载放在本机jupyter的默认路径
+2.把所有数据放在jupyter notebook/data 下即可运行
